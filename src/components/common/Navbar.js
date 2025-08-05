@@ -3,16 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   // Close mobile menu when route changes
   useEffect(() => {
@@ -28,26 +19,14 @@ const Navbar = () => {
     ['Contact', '/contact']
   ], []);
 
-  // Always use dark text for better visibility
-  const shouldUseDarkText = true;
-  
-  // Use white background when scrolled or on non-home pages
-  const shouldUseBackground = isScrolled || location.pathname !== '/';
-
   return (
-    <header 
-      className={`${isScrolled ? 'fixed' : 'relative'} top-0 w-full z-50 transition-all duration-300 ${
-        shouldUseBackground ? 'bg-white/80 backdrop-blur-md shadow-lg' : 'bg-transparent'
-      }`}
-    >
+    <header className="bg-white shadow-lg">
       <nav className="container mx-auto px-4">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <Link 
             to="/" 
-            className={`text-2xl font-bold transition-colors duration-300 ${
-              shouldUseDarkText ? 'text-blue-600' : 'text-white'
-            }`}
+            className="text-2xl font-bold text-blue-600 transition-colors duration-300 hover:text-blue-700"
           >
             Kings Modern Academy
           </Link>
@@ -58,17 +37,15 @@ const Navbar = () => {
             className="md:hidden focus:outline-none"
             aria-label="Toggle menu"
           >
-            <div className={`w-6 h-6 flex flex-col justify-around transition-all ${
-              shouldUseDarkText ? 'text-blue-600' : 'text-white'
-            }`}>
-              <span className={`block h-0.5 w-6 rounded-sm transform transition-all duration-300 ${
-                isOpen ? 'rotate-45 translate-y-2.5 bg-current' : 'bg-current'
+            <div className="w-6 h-6 flex flex-col justify-around">
+              <span className={`block h-0.5 w-6 bg-gray-800 rounded-sm transform transition-all duration-300 ${
+                isOpen ? 'rotate-45 translate-y-2.5' : ''
               }`}></span>
-              <span className={`block h-0.5 w-6 rounded-sm transition-all duration-300 ${
-                isOpen ? 'opacity-0 bg-current' : 'bg-current'
+              <span className={`block h-0.5 w-6 bg-gray-800 rounded-sm transition-all duration-300 ${
+                isOpen ? 'opacity-0' : ''
               }`}></span>
-              <span className={`block h-0.5 w-6 rounded-sm transform transition-all duration-300 ${
-                isOpen ? '-rotate-45 -translate-y-2.5 bg-current' : 'bg-current'
+              <span className={`block h-0.5 w-6 bg-gray-800 rounded-sm transform transition-all duration-300 ${
+                isOpen ? '-rotate-45 -translate-y-2.5' : ''
               }`}></span>
             </div>
           </button>
@@ -79,9 +56,9 @@ const Navbar = () => {
               <Link
                 key={title}
                 to={url}
-                className={`font-medium transition-colors duration-300 hover:text-blue-500 ${
-                  shouldUseDarkText ? 'text-gray-800' : 'text-white'
-                } ${location.pathname === url ? 'border-b-2 border-current' : ''}`}
+                className={`font-medium transition-colors duration-300 hover:text-blue-500 text-gray-800 ${
+                  location.pathname === url ? 'text-blue-600 border-b-2 border-blue-600' : ''
+                }`}
               >
                 {title}
               </Link>
@@ -91,15 +68,13 @@ const Navbar = () => {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden bg-white/95 backdrop-blur-md rounded-lg shadow-lg mx-2 mt-2 p-4 space-y-3">
+          <div className="md:hidden bg-white border-t border-gray-200 py-4">
             {navLinks.map(([title, url]) => (
               <Link
                 key={`mobile-${title}`}
                 to={url}
-                className={`block px-3 py-2 rounded-md transition-colors duration-200 ${
-                  location.pathname === url 
-                    ? 'bg-blue-50 text-blue-600' 
-                    : 'text-gray-800 hover:bg-blue-50'
+                className={`block px-4 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200 ${
+                  location.pathname === url ? 'bg-blue-50 text-blue-600 border-r-4 border-blue-600' : ''
                 }`}
                 onClick={() => setIsOpen(false)}
               >
